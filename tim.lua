@@ -3,57 +3,14 @@
 -- desc:   short description
 -- script: lua
 
-local current_scene = nil
-local menu_scene = nil
-local game_scene = nil
+current_scene = nil
+menu_scene = nil
+game_scene = nil
+crud_scene = nil
 
-local MenuScene = {}
-function MenuScene.new()
-	local self = {}
-	function self:enter()
-	end
-	function self:exit()
-	end
-	function self:update()
-		if btn(0) then
-			self:exit()
-			current_scene = game_scene
-			game_scene:enter()
-		end
-	end
-	function self:draw()
-		cls(0)
-		print("tim jumps")
-	end
-	return self
-end
-
-local GameScene = {}
-function GameScene.new()
-	local self = {}
-	self.jumping = false
-	self.jumpcounter = 0
-	function self:enter() 
-	end
-	function self:exit() end
-	function self:update()
-		if btn(0) then
-			if self.jumpcounter == 0 then
-				self.jumping = true
-
-			end
-		end 
-
-		if self.jumping then
-			self.jumpcounter = self.jumpcounter + 1
-		end
-	end
-	function self:draw() 
-		cls(1)
-		spr(1,50,50)
-	end
-	return self
-end
+local MenuScene = require("menu")
+local GameScene = require("game")
+local CrudScene = require("crud")
 
 function update()
 	--[[
@@ -74,6 +31,7 @@ function init()
 	menu_scene = MenuScene.new()
 	current_scene = menu_scene
 	game_scene = GameScene.new()
+	crud_scene = CrudScene.new()
 end
 
 init()
@@ -83,10 +41,14 @@ function TIC()
 end
 
 -- <TILES>
--- 001:0000000000000000000000000006600000066000000000000000000000000000
+-- 000:0000000000000000000000000006600000066000000000000000000000000000
+-- 001:0000000000000000000000000066660000666600000000000000000000000000
 -- 002:0000000000000000006666000066660000666600006666000000000000000000
--- 003:0000000006666660066666600666666006666660066666600666666000000000
--- 004:6666666666666666666666666666666666666666666666666666666666666666
+-- 003:0000000000000000066666600666666006666660066666600000000000000000
+-- 004:0000000006666660066666600666666006666660066666600666666000000000
+-- 005:0000000066666666666666666666666666666666666666666666666600000000
+-- 006:6666666666666666666666666666666666666666666666666666666666666666
+-- 007:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb
 -- 017:f8fffffff8888888f888f888f8888ffff8888888f2222222ff000fffefffffef
 -- 018:fff800ff88880ffef8880fee88880fee88880fee2222ffee000ffeeeffffeeee
 -- 019:f8fffffff8888888f888f888f8888ffff8888888f2222222ff000fffefffffef
